@@ -1,0 +1,27 @@
+<section class="shalom-chat" aria-label="Asistente virtual de SHALOM">
+    <div class="shalom-chat__panel" id="shalom-chat-panel" hidden>
+        <header class="shalom-chat__header">
+            <div>
+                <strong>Asistente SHALOM</strong>
+                <span>¿En qué puedo ayudarte?</span>
+            </div>
+            <button class="shalom-chat__close" type="button" aria-label="Cerrar chat">&times;</button>
+        </header>
+        <div class="shalom-chat__messages" aria-live="polite" aria-relevant="additions">
+            <p class="shalom-chat__message shalom-chat__message--assistant">¡Hola! Soy el asistente de SHALOM. ¿Qué te
+                gustaría saber?</p>
+        </div>
+        <form class="shalom-chat__form">
+            <label class="visually-hidden" for="shalom-chat-input">Escribe tu mensaje</label>
+            <input id="shalom-chat-input" name="message" maxlength="1000" placeholder="Escribe tu mensaje..."
+                autocomplete="off" required>
+            aria-hidden="true"></i></button>
+            <button type="submit" aria-label="Enviar mensaje"><i class="bi bi-send-fill"
+                    aria-hidden="true"></i></button>
+        </form>
+    </div>
+    <button class="shalom-chat__toggle" type="button" aria-controls="shalom-chat-panel" aria-expanded="false">
+        <i class="bi bi-chat-dots-fill" aria-hidden="true"></i><span>Chat</span>
+    </button>
+</section>
+<script src="/js/chatbot.js" defer></script>
