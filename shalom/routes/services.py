@@ -1,8 +1,6 @@
 """Service catalog and admin CRUD."""
 
 from flask import Blueprint, abort, flash, redirect, render_template, request
-from flask_login import login_required
-
 from ..decorators import admin_required
 from ..extensions import db
 from ..models import Appointment, Service
@@ -45,12 +43,12 @@ def _validate(form, errors):
 
 
 @bp.route("")
-@login_required
 def index():
     from flask_login import current_user
 
     services = Service.query.filter_by(status=True).order_by(Service.name.asc()).all()
-    return render_template("services/index.html", services=services, isAdmin=current_user.is_admin)
+    is_admin = current_user.is_authenticated and current_user.is_admin
+    return render_template("services/index.html", services=services, isAdmin=is_admin)
 
 
 @bp.route("/admin")
