@@ -9,7 +9,7 @@ ALIASES = {
     "/clientes": "/users",
     "/servicios": "/services",
     "/inventario": "/inventory",
-    "/ventas": "/carrito",
+    "/ventas": "/reportes/ingresos",
     "/configuracion": "/profile",
 }
 
