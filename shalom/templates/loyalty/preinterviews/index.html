@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pre-entrevistas — SHALOM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/css/shalom-reset.css" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
+</head>
+<body>
+{% include 'layouts/navbar.html' %}
+<main>
+    {% include 'layouts/messages.html' %}
+    <div class="container-lg py-4">
+        <div class="mb-4">
+            <h2 class="section-title mb-1"><i class="bi bi-person-lines-fill"></i> Pre-entrevistas laborales</h2>
+            <p class="text-muted mb-0">Revisa las respuestas y decide a quién contactar para una entrevista presencial.</p>
+        </div>
+        {% if applications %}
+            <div class="d-grid gap-4">
+                {% for application in applications %}
+                    <article class="appointments-card p-4">
+                        <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-3">
+                            <div>
+                                <h3 class="h5 mb-1">{{ application.applicant_name }}</h3>
+                                <div>{{ application.applicant_email }}</div>
+                                <div class="text-muted">{{ application.applicant_phone or 'Sin teléfono registrado' }}</div>
+                                <small class="text-muted">Enviada: {{ application.created_at|temporal("d 'de' MMMM yyyy, h:mm a") }}</small>
+                            </div>
+                            <form method="post" action="{{ '/preentrevistas/' ~ application.id ~ '/status' }}" class="d-flex gap-2">
+                                <label class="visually-hidden" for="status-{{ application.id }}">Estado de postulación</label>
+                                <select class="form-select form-select-sm" id="status-{{ application.id }}" name="status">
+                                    <option value="pendiente" {% if application.status == 'pendiente' %}selected{% endif %}>Pendiente</option>
+                                    <option value="contactar" {% if application.status == 'contactar' %}selected{% endif %}>Contactar</option>
+                                    <option value="no_seleccionado" {% if application.status == 'no_seleccionado' %}selected{% endif %}>No seleccionado</option>
+                                </select>
+                                <button class="btn btn-sm btn-shalom-pink" type="submit">Guardar</button>
+                            </form>
+                        </div>
+                        <dl class="row mb-0">
+                            <dt class="col-md-3">Puesto o especialidad</dt>
+                            <dd class="col-md-9">{{ application.answers.position }}</dd>
+                            <dt class="col-md-3">Experiencia</dt>
+                            <dd class="col-md-9 text-break">{{ application.answers.experience }}</dd>
+                            <dt class="col-md-3">Disponibilidad</dt>
+                            <dd class="col-md-9 text-break">{{ application.answers.availability }}</dd>
+                            <dt class="col-md-3">Habilidades</dt>
+                            <dd class="col-md-9 text-break">{{ application.answers.strengths }}</dd>
+                            <dt class="col-md-3">Motivación</dt>
+                            <dd class="col-md-9 text-break mb-0">{{ application.answers.motivation }}</dd>
+                        </dl>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="appointments-card p-4 text-center">
+                <i class="bi bi-inbox fs-1 text-muted"></i>
+                <p class="mb-0 mt-2">Todavía no hay pre-entrevistas recibidas.</p>
+            </div>
+        {% endif %}
+    </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
