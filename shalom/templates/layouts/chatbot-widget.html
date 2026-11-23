@@ -3,7 +3,7 @@
         <header class="shalom-chat__header">
             <div>
                 <strong>Asistente SHALOM</strong>
-                <span>¿En qué puedo ayudarte?</span>
+                <span class="shalom-chat__subtitle">¿En qué puedo ayudarte?</span>
             </div>
             <button class="shalom-chat__close" type="button" aria-label="Cerrar chat">&times;</button>
         </header>
@@ -11,11 +11,14 @@
             <p class="shalom-chat__message shalom-chat__message--assistant">¡Hola! Soy el asistente de SHALOM. ¿Qué te
                 gustaría saber?</p>
         </div>
+        <div class="shalom-chat__actions">
+            <button class="shalom-chat__interview-start" type="button">Iniciar pre-entrevista laboral</button>
+            <small>El administrador recibirá tus respuestas y los datos de contacto de tu perfil.</small>
+        </div>
         <form class="shalom-chat__form">
             <label class="visually-hidden" for="shalom-chat-input">Escribe tu mensaje</label>
             <input id="shalom-chat-input" name="message" maxlength="1000" placeholder="Escribe tu mensaje..."
                 autocomplete="off" required>
-            aria-hidden="true"></i></button>
             <button type="submit" aria-label="Enviar mensaje"><i class="bi bi-send-fill"
                     aria-hidden="true"></i></button>
         </form>
