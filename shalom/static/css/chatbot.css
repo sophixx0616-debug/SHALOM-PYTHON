@@ -90,14 +90,43 @@
     padding: 16px;
 }
 
+.shalom-chat__actions {
+    display: grid;
+    gap: 4px;
+    padding: 0 16px 12px;
+}
+
+.shalom-chat__actions small {
+    color: #6b5b68;
+    font-size: .7rem;
+}
+
+.shalom-chat__interview-start {
+    padding: 8px 10px;
+    border: 1px solid var(--chat-line);
+    border-radius: 7px;
+    background: #fff0f5;
+    color: var(--chat-rose);
+    font: 500 .78rem Poppins, sans-serif;
+    cursor: pointer;
+}
+
+.shalom-chat__interview-start:disabled {
+    opacity: .6;
+    cursor: wait;
+}
+
 .shalom-chat__message {
-    max-width: 85%;
+    width: fit-content;
+    max-width: 92%;
     margin: 0;
     padding: 10px 12px;
     border-radius: 12px;
     background: #fff0f5;
     font-size: .83rem;
     line-height: 1.5;
+    text-align: left;
+    word-break: normal;
     overflow-wrap: anywhere;
     white-space: pre-wrap;
 }
