@@ -46,7 +46,7 @@ def login():
         return redirect("/dashboard")
 
     if request.method == "POST":
-        email = (request.form.get("username") or "").strip()
+        email = (request.form.get("username") or "").strip().lower()
         password = request.form.get("password") or ""
         remember = request.form.get("remember-me") == "true"
 
@@ -121,8 +121,9 @@ def register():
             db.session.add(user)
             db.session.commit()
 
+            login_user(user)
             flash("¡Bienvenida a SHALOM! Tu cuenta fue creada correctamente.", "success")
-            return redirect("/login")
+            return redirect("/dashboard")
 
     return render_template("auth/register.html", form=form, errors=errors)
 
