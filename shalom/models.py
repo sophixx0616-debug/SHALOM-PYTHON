@@ -196,3 +196,18 @@ class PasswordResetToken(db.Model):
     token = db.Column(db.String(255), unique=True, nullable=False)
     email = db.Column(db.String(255), nullable=False)
     expires_at = db.Column(db.DateTime, nullable=False)
+
+
+class PreInterview(db.Model):
+    __tablename__ = "pre_interviews"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False, index=True)
+    applicant_name = db.Column(db.String(255), nullable=False)
+    applicant_email = db.Column(db.String(255), nullable=False)
+    applicant_phone = db.Column(db.String(255))
+    answers = db.Column(db.JSON, nullable=False)
+    status = db.Column(db.String(50), nullable=False, default="pendiente")
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now, index=True)
+
+    user = db.relationship("User")
