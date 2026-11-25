@@ -15,7 +15,7 @@ VALID_STATUSES = {"pendiente", "contactar", "no_seleccionado"}
 @admin_required
 def index():
     applications = PreInterview.query.order_by(PreInterview.created_at.desc()).all()
-    return render_template("preinterviews/index.html", applications=applications)
+    return render_template("loyalty/preinterviews/index.html", applications=applications)
 
 
 @bp.post("/<int:application_id>/status")
