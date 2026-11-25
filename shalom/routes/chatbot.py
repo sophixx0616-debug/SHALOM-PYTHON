@@ -4,7 +4,7 @@ from flask import Blueprint, current_app, jsonify, request, session
 from flask_login import current_user, login_required
 
 from ..extensions import db
-from ..models import PreInterview
+
 
 bp = Blueprint("chatbot", __name__)
 
