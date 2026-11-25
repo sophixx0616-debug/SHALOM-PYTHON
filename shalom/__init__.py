@@ -83,3 +83,25 @@ def create_app(test_config=None):
     from .routes.services import bp as services_bp
     from .routes.specialists import bp as specialists_bp
     from .routes.store import bp
+    from .routes.users import bp as users_bp
+
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(appointments_bp)
+    app.register_blueprint(cart_bp)
+    app.register_blueprint(chatbot_bp)
+    app.register_blueprint(dashboard_bp)
+    app.register_blueprint(inventory_bp)
+    app.register_blueprint(loyalty_bp)
+    app.register_blueprint(misc_bp)
+    app.register_blueprint(profile_bp)
+    app.register_blueprint(reports_bp)
+    app.register_blueprint(services_bp)
+    app.register_blueprint(specialists_bp)
+    app.register_blueprint(bp)
+    app.register_blueprint(users_bp)
+
+    with app.app_context():
+        db.create_all()
+        seed_database()
+
+    return app
