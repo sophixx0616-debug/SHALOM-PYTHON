@@ -7,7 +7,16 @@ from datetime import date, datetime, time, timedelta
 
 from shalom import create_app
 from shalom.extensions import db
-from shalom.models import Appointment, Inventory, InventoryMovement, Role, Service, Specialist, User
+from shalom.models import (
+    Appointment,
+    Inventory,
+    InventoryMovement,
+    PreInterview,
+    Role,
+    Service,
+    Specialist,
+    User,
+)
 
 FAILS = []
 
@@ -78,6 +87,35 @@ def main():
         )
         response = client.post("/api/chatbot", json={"message": "Hola"})
         ok("chatbot reports missing API key", response.status_code == 503)
+
+        # -- chatbot pre-interview ----------------------------------------
+        response = client.post("/api/chatbot/interview", json={"action": "start"})
+        ok("pre-interview starts", response.status_code == 200 and response.json["progress"] == 1)
+        response = client.post("/api/chatbot/interview", json={"answer": "1"})
+        ok("invalid position is rejected", response.status_code == 400)
+        response = client.post("/api/chatbot/interview", json={"answer": "Manicurista"})
+        ok("valid position advances interview", response.status_code == 200 and response.json["progress"] == 2)
+        response = client.post("/api/chatbot/interview", json={"answer": "1"})
+        ok("short interview response is rejected", response.status_code == 400)
+        interview_answers = [
+            "Dos años trabajando en manicure y pedicure.",
+            "Estoy disponible de lunes a sábado desde la próxima semana.",
+            "Aporto creatividad, responsabilidad y excelente atención al cliente.",
+            "Me interesa crecer profesionalmente y ofrecer buen servicio.",
+        ]
+        interview_result = None
+        for answer in interview_answers:
+            interview_result = client.post("/api/chatbot/interview", json={"answer": answer})
+        with app.app_context():
+            saved_interviews = PreInterview.query.filter_by(user_id=ana_id).all()
+            saved_answers = saved_interviews[0].answers if saved_interviews else {}
+        ok(
+            "completed pre-interview creates applicant profile",
+            interview_result.status_code == 200
+            and interview_result.json.get("completed")
+            and len(saved_interviews) == 1
+            and saved_answers.get("position") == "Manicurista",
+        )
 
         # -- appointment create -------------------------------------------
         with app.app_context():
@@ -174,6 +212,11 @@ def main():
         ok(
             "admin dashboard includes chatbot",
             response.status_code == 200 and b"shalom-chat__toggle" in response.data,
+        )
+        response = admin.get("/preentrevistas")
+        ok(
+            "admin can review pre-interview profile",
+            response.status_code == 200 and b"Manicurista" in response.data,
         )
 
         response = admin.post(
