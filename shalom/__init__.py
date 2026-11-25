@@ -79,6 +79,7 @@ def create_app(test_config=None):
     from .routes.loyalty import bp as loyalty_bp
     from .routes.misc import bp as misc_bp
     from .routes.profile import bp as profile_bp
+    from .routes.preinterviews import bp as preinterviews_bp
     from .routes.reports import bp as reports_bp
     from .routes.services import bp as services_bp
     from .routes.specialists import bp as specialists_bp
@@ -94,6 +95,7 @@ def create_app(test_config=None):
     app.register_blueprint(loyalty_bp)
     app.register_blueprint(misc_bp)
     app.register_blueprint(profile_bp)
+    app.register_blueprint(preinterviews_bp)
     app.register_blueprint(reports_bp)
     app.register_blueprint(services_bp)
     app.register_blueprint(specialists_bp)
