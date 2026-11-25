@@ -4,6 +4,7 @@ from flask import Blueprint, current_app, jsonify, request, session
 from flask_login import current_user, login_required
 
 from ..extensions import db
+from ..models import PreInterview
 
 
 bp = Blueprint("chatbot", __name__)
@@ -117,7 +118,22 @@ def pre_interview():
         return jsonify(error="Escribe una respuesta de hasta 1000 caracteres."), 400
 
     key, _question = INTERVIEW_QUESTIONS[len(answers)]
-    answers[key] = answer.strip()
+    answer = " ".join(answer.split())
+    words = answer.split()
+    letters = [character for character in answer if character.isalpha()]
+    minimum_words = 1 if key == "position" else 3
+    if (
+        len(words) < minimum_words
+        or len(letters) < 3
+        or (key == "position" and not any(len(word) >= 3 for word in words))
+    ):
+        if key == "position":
+            error = "Indica un puesto o especialidad válido, por ejemplo: Manicurista."
+        else:
+            error = "Cuéntanos un poco más para que tu respuesta sea útil (al menos 3 palabras)."
+        return jsonify(error=error), 400
+
+    answers[key] = answer
     state["answers"] = answers
     session["pre_interview"] = state
 
